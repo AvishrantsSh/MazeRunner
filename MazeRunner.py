@@ -47,7 +47,8 @@ def sarr(img, dim):
 
 
 #adjust location as per your convenience
-img = cv2.imread("/home/avishrant/GitRepo/MazeRunner/maze.png")
+oimg = cv2.imread("/home/avishrant/GitRepo/MazeRunner/maze.png")
+img = cv2.resize(oimg, (300,300), interpolation = cv2.INTER_AREA)
 dim = img.shape
 normalise(img,dim)
 

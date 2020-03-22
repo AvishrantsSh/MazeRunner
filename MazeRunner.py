@@ -16,7 +16,7 @@ def getmin(img , dim):
     for x in range(1,dim[0] - 1):
         countw = 0
         st = True
-        for y in range(1,dim[1] - 1):
+        for y in range(1,dim[1]):
             if np.all(img[x][y] == 255):
                 countw += 1
                 st = False
@@ -29,7 +29,7 @@ def getmin(img , dim):
     for y in range(1,dim[1] - 1):
         counth = 0
         st = True
-        for x in range(1,dim[0] - 1):
+        for x in range(1,dim[0]):
             if np.all(img[x][y] == 0):
                 counth += 1
                 st = False
@@ -47,8 +47,8 @@ def sarr(img, dim):
 
 
 #adjust location as per your convenience
-oimg = cv2.imread("/home/avishrant/GitRepo/MazeRunner/maze.png")
-img = cv2.resize(oimg, (300,300), interpolation = cv2.INTER_AREA)
+img = cv2.imread("/home/avishrant/GitRepo/MazeRunner/maze.png")
+#img = cv2.resize(oimg, (300,300), interpolation = cv2.INTER_AREA)
 dim = img.shape
 normalise(img,dim)
 

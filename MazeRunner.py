@@ -13,29 +13,69 @@ def normalise(img, dim):
 
 def getmin(img , dim):
     global mw,mh
-    for x in range(1,dim[0] - 1):
+
+    for x in range(0,dim[0]):
         countw = 0
         st = True
-        for y in range(1,dim[1]):
+        snum = 0
+        enum = 0
+        for y in range(0,dim[1]):
+            if np.all(img[x][y] == 0):
+                snum = y
+                break
+
+        for y in range(dim[1],0,-1):
+            if np.all(img[x][y-1] == 0):
+                enum = y
+                break
+        
+
+        for y in range(snum,enum):
             if np.all(img[x][y] == 255):
+                img[x][y] = [255,255,0]
                 countw += 1
                 st = False
+
             else:
-                if st == False:
+                if st == False and y == dim[1] - 1:
                     break
+                else:
+                    if mw > countw and countw != 0:
+                        mw = countw
+                    countw = 0
+                
+             
         if mw > countw and countw != 0:
             mw = countw
 
-    for y in range(1,dim[1] - 1):
+    for y in range(0,dim[1]):
         counth = 0
         st = True
-        for x in range(1,dim[0]):
+        snum = 0
+        enum = 0
+        for x in range(0,dim[0]):
+            if np.all(img[x][y] == 255):
+                snum = x
+                break
+
+        for x in range(dim[0],0,-1):
+            if np.all(img[x-1][y] == 255):
+                enum = x
+                break
+
+        for x in range(snum,dim[0]):
             if np.all(img[x][y] == 0):
+                img[x][y] = [0,0,255]
                 counth += 1
                 st = False
+
             else:
-                if st == False:
+                if st == False and x == dim[0] - 1:
                     break
+                else:
+                    if mh > counth and counth != 0:
+                        mh = counth
+                    counth = 0
 
         if mh > counth and counth != 0:
             mh = counth

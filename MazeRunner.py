@@ -6,7 +6,7 @@ def normalise(img, dim):
         for y in range(0,dim[1]):
             if np.any(img[x][y] != 255) and np.any(img[x][y] != 0):
                 img[x][y] = [0,0,0]
-
+#hello world
 img = cv2.imread("/home/avishrant/Desktop/Test/maze.png")
 dim = img.shape
 normalise(img,dim)

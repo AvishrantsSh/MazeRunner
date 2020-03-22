@@ -6,6 +6,10 @@ def normalise(img, dim):
         for y in range(0,dim[1]):
             if np.any(img[x][y] != 255) and np.any(img[x][y] != 0):
                 img[x][y] = [0,0,0]
+    spixel(img,dim)
+
+def spixel(img, dim):
+    print("Under Development")
 
 #adjust location as per your convenience
 img = cv2.imread("/home/avishrant/GitRepo/MazeRunner/maze.png")

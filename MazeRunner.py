@@ -1,4 +1,4 @@
-#Applicable Only for Square-Cell Mazes
+#Applicable Only for Rectangle-Cell Mazes
 
 import cv2
 import numpy as np
@@ -10,7 +10,8 @@ def normalise(img, dim):
         for y in range(0,dim[1]):
             if np.any(img[x][y] != 255):
                 img[x][y] = [0,0,0]
-    sarr(img,dim)
+    getstart(img,dim)
+    getsize(img)
 
 def getstart(img,dim):
     global sc,sr,ec,er
@@ -82,13 +83,12 @@ def getsize(img):
             mh = counth
 
 def sarr(img, dim):
-    getstart(img,dim)
-    getsize(img)
+    
     print("Under Development")
     print(mh,mw)
     print(sc,ec,sr,er)
 
-#Tough Job Starts Here
+    #Tough Job Starts Here
     binmg = []
     xt = 0
     yt = 0
@@ -113,15 +113,20 @@ def sarr(img, dim):
         else:
             x += mh
         xt += 1
-        
         binmg.append(tmp)    
 
-    for x in binmg:
-        print(*x,sep=' ')
+    return binmg
+
+def getsol(img,dim):
+    arr = sarr(img, dim)
+    for x in arr:
+        print(*x , sep=' ')
+
 #adjust location as per your convenience
 img = cv2.imread("/home/avishrant/GitRepo/MazeRunner/maze.png")
 dim = img.shape
 normalise(img,dim)
+getsol(img,dim)
 
 cv2.imshow("Image", img)
 cv2.waitKey(0)

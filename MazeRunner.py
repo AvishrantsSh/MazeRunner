@@ -129,11 +129,12 @@ def getsol(row,col,prow,pcol):
         print("Reached")
         return
     
+
     try:    
         if arr[row][col-1] == 1 and (prow != row or pcol != col-1) and state == False:
             res.append([row,col-1])
             getsol(row,col-1,row,col)
-        
+                    
         if arr[row][col+1] == 1 and (prow != row or pcol != col+1) and state == False:
             res.append([row,col+1])
             getsol(row,col+1,row,col)
@@ -145,16 +146,16 @@ def getsol(row,col,prow,pcol):
         if arr[row-1][col] == 1 and (prow != row-1 or pcol != col) and state == False:
             res.append([row-1,col])
             getsol(row-1,col,row,col)
-        
-        else:
-            res.pop
+            
+        if x == False:
+            res = res[:-1]
         
     except:
         print("Oops")
-           
-    
+
+        
 #adjust location as per your convenience
-img = cv2.imread("/home/avishrant/GitRepo/MazeRunner/maze.png")
+img = cv2.imread("/home/avishrant/GitRepo/MazeRunner/Maze/maze3.png")
 dim = img.shape
 normalise(img,dim)
 sarr(img,dim)
@@ -166,7 +167,6 @@ for x in range(0,len(arr)):
         else:
             print(arr[x][y],end = ' ')
     print()    
-print(res)
 cv2.imshow("Image", img)
 cv2.waitKey(0)
 cv2.destroyAllWindows()

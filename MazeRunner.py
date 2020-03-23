@@ -37,7 +37,7 @@ def getstart(img,dim):
         if st == False:
             break
 
-def getmin(img):
+def getsize(img):
     global mw,mh,sc,sr,ec,er
 
     for x in range(sc,ec):
@@ -83,11 +83,41 @@ def getmin(img):
 
 def sarr(img, dim):
     getstart(img,dim)
-    getmin(img)
+    getsize(img)
     print("Under Development")
     print(mh,mw)
-    
+    print(sc,ec,sr,er)
 
+#Tough Job Starts Here
+    binmg = []
+    xt = 0
+    yt = 0
+    x = sc
+    while x < ec:
+        tmp=[]
+        y = sr        
+        while y < er:
+            if np.all(img[x][y] == 0):
+                tmp.append(0)
+            else:
+                tmp.append(1)
+        
+            if(yt % 2 == 1):
+                y += mw
+            else:
+                y += mh
+            yt += 1
+        
+        if(xt % 2 == 1):
+            x += mw
+        else:
+            x += mh
+        xt += 1
+        
+        binmg.append(tmp)    
+
+    for x in binmg:
+        print(*x,sep=' ')
 #adjust location as per your convenience
 img = cv2.imread("/home/avishrant/GitRepo/MazeRunner/maze.png")
 dim = img.shape

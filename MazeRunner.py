@@ -2,18 +2,22 @@
 
 import cv2
 import numpy as np
+from termcolor import colored
+
 mh,mw = 100,100
 sr,er,sc,ec = 0,0,0,0
-
+arr = []
+res = []
+state = False
 def normalise(img, dim):
     for x in range(0,dim[0]):
         for y in range(0,dim[1]):
             if np.any(img[x][y] != 255):
                 img[x][y] = [0,0,0]
-    getstart(img,dim)
+    getmstart(img,dim)
     getsize(img)
 
-def getstart(img,dim):
+def getmstart(img,dim):
     global sc,sr,ec,er
 
     for x in range(0,dim[0]):
@@ -83,13 +87,11 @@ def getsize(img):
             mh = counth
 
 def sarr(img, dim):
-    
     print("Under Development")
     print(mh,mw)
     print(sc,ec,sr,er)
-
+    global arr
     #Tough Job Starts Here
-    binmg = []
     xt = 0
     yt = 0
     x = sc
@@ -113,21 +115,58 @@ def sarr(img, dim):
         else:
             x += mh
         xt += 1
-        binmg.append(tmp)    
+        arr.append(tmp) 
 
-    return binmg
+    coord = arr[0].index(1)
+    res.append([0,coord])
 
-def getsol(img,dim):
-    arr = sarr(img, dim)
-    for x in arr:
-        print(*x , sep=' ')
+    getsol(0,coord,0,0)
 
+def getsol(row,col,prow,pcol):
+    global res,arr,state
+    if row == len(arr) -  1:
+        state = True
+        print("Reached")
+        return
+    
+    try:    
+        if arr[row][col-1] == 1 and (prow != row or pcol != col-1) and state == False:
+            res.append([row,col-1])
+            getsol(row,col-1,row,col)
+        
+        if arr[row][col+1] == 1 and (prow != row or pcol != col+1) and state == False:
+            res.append([row,col+1])
+            getsol(row,col+1,row,col)
+        
+        if arr[row+1][col] == 1 and (prow != row+1 or pcol != col) and state == False:
+            res.append([row+1,col])
+            getsol(row+1,col,row,col)
+        
+        if arr[row-1][col] == 1 and (prow != row-1 or pcol != col) and state == False:
+            res.append([row-1,col])
+            getsol(row-1,col,row,col)
+        
+        else:
+            res.pop
+        
+    except:
+        print("Oops")
+           
+    
 #adjust location as per your convenience
 img = cv2.imread("/home/avishrant/GitRepo/MazeRunner/maze.png")
 dim = img.shape
 normalise(img,dim)
-getsol(img,dim)
+sarr(img,dim)
 
+for x in range(0,len(arr)):
+    for y in range(0,len(arr[0])):
+        if [x,y] in res:
+            print(colored(arr[x][y],'red'),end=' ')
+        else:
+            print(arr[x][y],end = ' ')
+    print()    
+print(res)
 cv2.imshow("Image", img)
 cv2.waitKey(0)
 cv2.destroyAllWindows()

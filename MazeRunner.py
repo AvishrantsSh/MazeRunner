@@ -1,9 +1,10 @@
-#Applicable Only for Square-Cell Mazes                                                                         Mazes
+#Applicable Only for Square-Cell Mazes
 
 import cv2
 import numpy as np
+mh,mw = 100,100
+sr,er,sc,ec = 0,0,0,0
 
-mh , mw = 100 , 100
 def normalise(img, dim):
     for x in range(0,dim[0]):
         for y in range(0,dim[1]):
@@ -11,28 +12,40 @@ def normalise(img, dim):
                 img[x][y] = [0,0,0]
     sarr(img,dim)
 
-def getmin(img , dim):
-    global mw,mh
+def getstart(img,dim):
+    global sc,sr,ec,er
 
     for x in range(0,dim[0]):
-        countw = 0
         st = True
-        snum = 0
-        enum = 0
         for y in range(0,dim[1]):
             if np.all(img[x][y] == 0):
-                snum = y
+                sc = y
+                sr = x
+                st = False
                 break
+        if st == False:
+            break
 
+    for x in range(dim[0],0,-1):
+        st = True
         for y in range(dim[1],0,-1):
-            if np.all(img[x][y-1] == 0):
-                enum = y
+            if np.all(img[x-1][y-1] == 0):
+                ec = y
+                er = x
+                st = False
                 break
-        
+        if st == False:
+            break
 
-        for y in range(snum,enum):
+def getmin(img):
+    global mw,mh,sc,sr,ec,er
+
+    for x in range(sc,ec):
+        countw = 0
+        st = True
+        
+        for y in range(sr,er):
             if np.all(img[x][y] == 255):
-                img[x][y] = [255,255,0]
                 countw += 1
                 st = False
 
@@ -48,24 +61,12 @@ def getmin(img , dim):
         if mw > countw and countw != 0:
             mw = countw
 
-    for y in range(0,dim[1]):
+    for y in range(sr,er):
         counth = 0
         st = True
-        snum = 0
-        enum = 0
-        for x in range(0,dim[0]):
-            if np.all(img[x][y] == 255):
-                snum = x
-                break
-
-        for x in range(dim[0],0,-1):
-            if np.all(img[x-1][y] == 255):
-                enum = x
-                break
-
-        for x in range(snum,dim[0]):
+        
+        for x in range(sc,ec):
             if np.all(img[x][y] == 0):
-                img[x][y] = [0,0,255]
                 counth += 1
                 st = False
 
@@ -81,14 +82,14 @@ def getmin(img , dim):
             mh = counth
 
 def sarr(img, dim):
-    getmin(img,dim)
+    getstart(img,dim)
+    getmin(img)
     print("Under Development")
     print(mh,mw)
-
+    
 
 #adjust location as per your convenience
 img = cv2.imread("/home/avishrant/GitRepo/MazeRunner/maze.png")
-#img = cv2.resize(oimg, (300,300), interpolation = cv2.INTER_AREA)
 dim = img.shape
 normalise(img,dim)
 

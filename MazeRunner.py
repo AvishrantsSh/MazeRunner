@@ -1,27 +1,32 @@
 #Applicable Only for Rectangle-Cell Mazes
 
-import cv2
+import cv2,sys
 import numpy as np
 #from termcolor import colored
+sys.setrecursionlimit(10**6)
+
 
 #[b,g,r] format
 sol_clr = [255,0,0]
+path = [255,255,255]
+border = [0,0,0]
+
 mh,mw = 100,100
 sr,er,sc,ec = 0,0,0,0
 arr = []
 res = []
 state = False
-def normalise(img, dim):
+def normalise():
+    global img,dim
     for x in range(0,dim[0]):
         for y in range(0,dim[1]):
             if np.any(img[x][y] != 255):
-                img[x][y] = [0,0,0]
-    getmstart(img,dim)
-    getsize(img)
+                img[x][y] = border
+    getbounds()
+    rect_size()
 
-def getmstart(img,dim):
-    global sc,sr,ec,er
-
+def getbounds():
+    global sc,sr,ec,er,img,dim
     for x in range(0,dim[0]):
         st = True
         for y in range(0,dim[1]):
@@ -44,8 +49,8 @@ def getmstart(img,dim):
         if st == False:
             break
 
-def getsize(img):
-    global mw,mh,sc,sr,ec,er
+def rect_size():
+    global mw,mh,sc,sr,ec,er,img
 
     for x in range(sc,ec):
         countw = 0
@@ -88,11 +93,10 @@ def getsize(img):
         if mh > counth and counth != 0:
             mh = counth
 
-def sarr(img, dim):
-    print("Under Development")
-    print(mh,mw)
-    print(sc,ec,sr,er)
-    global arr
+def binarray():
+    # print(mh,mw)
+    # print(sc,ec,sr,er)
+    global arr,img,dim
     #Tough Job Starts Here
     xt = 0
     yt = 0
@@ -121,42 +125,43 @@ def sarr(img, dim):
 
     coord = arr[0].index(1)
     res.append([0,coord])
+    getsolindex(0,coord,0,0)
 
-    getsol(0,coord,0,0)
-
-def getsol(row,col,prow,pcol):
+def getsolindex(row,col,prow,pcol):
     global res,arr,state
     if row == len(arr) -  1:
         state = True
-        print("Reached")
+        print("Solution Found")
         return
     
 
-    try:    
+    try:
+            
+        if arr[row+1][col] == 1 and (prow != row+1 or pcol != col) and state == False:
+            res.append([row+1,col])
+            getsolindex(row+1,col,row,col)
+        
         if arr[row][col-1] == 1 and (prow != row or pcol != col-1) and state == False:
             res.append([row,col-1])
-            getsol(row,col-1,row,col)
+            getsolindex(row,col-1,row,col)
                     
         if arr[row][col+1] == 1 and (prow != row or pcol != col+1) and state == False:
             res.append([row,col+1])
-            getsol(row,col+1,row,col)
-        
-        if arr[row+1][col] == 1 and (prow != row+1 or pcol != col) and state == False:
-            res.append([row+1,col])
-            getsol(row+1,col,row,col)
+            getsolindex(row,col+1,row,col)
         
         if arr[row-1][col] == 1 and (prow != row-1 or pcol != col) and state == False:
             res.append([row-1,col])
-            getsol(row-1,col,row,col)
+            getsolindex(row-1,col,row,col)
             
         if state == False:
             res = res[:-1]
         
     except:
-        print("Oops")
+        print("Oops...No Solution Found")
 
-def construct(img):
-    global sc,sr,ec,er,res,mh,mw
+def construct():
+    binarray()
+    global sc,sr,ec,er,res,mh,mw,img
     x = sc
     xt = 0
     while x < ec:
@@ -176,9 +181,11 @@ def construct(img):
 
                 else:
                     h = mh
+                
                 h += x
                 k += y
-                img[x:h,y:k] = sol_clr            
+                img[x:h,y:k] = sol_clr    
+
             if yt % 2 == 1:
                 y += mw
 
@@ -192,21 +199,35 @@ def construct(img):
             x += mh
         
         xt += 1
-        
-#adjust location as per your convenience
-img = cv2.imread("/home/avishrant/GitRepo/MazeRunner/Maze/maze3.png")
-dim = img.shape
-normalise(img,dim)
-sarr(img,dim)
 
-construct(img)
-# for x in range(0,len(arr)):
-#     for y in range(0,len(arr[0])):
-#         if [x,y] in res:
-#             print(colored(arr[x][y],'red'),end=' ')
-#         else:
-#             print(arr[x][y],end = ' ')
-#     print()
+    for h in range(sc,ec):
+        for k in range(sr,er):
+            if np.all(img[h][k] == 0):
+                try:
+                    if np.all(img[h-1][k] == sol_clr):
+                        img[h-1][k] = path
+
+                    if np.all(img[h+1][k] == sol_clr):
+                        img[h+1][k] = path
+
+                    if np.all(img[h][k-1] == sol_clr):
+                        img[h][k-1] = path
+
+                    if np.all(img[h][k+1] == sol_clr):
+                        img[h][k+1] = path
+                        
+                except:
+                    print("Error 401:Ignoring")
+    print("Showing Resultant")
+
+#adjust location as per your convenience
+img = cv2.imread("/home/avishrant/GitRepo/MazeRunner/Maze/maze8.png")
+dim = img.shape
+print("Under Development")
+
+print("The process may take time, according to complexity and size of maze")
+normalise()
+construct()
 
 cv2.imshow("Image", img)
 #cv2.imshow("Image" , resimg)

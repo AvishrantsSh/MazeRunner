@@ -53,7 +53,6 @@ def getbounds():
 
 def rect_size():
     global mw,mh,sc,sr,ec,er,img
-
     for x in range(sc,ec):
         countw = 0
         st = True
@@ -71,7 +70,6 @@ def rect_size():
                         mw = countw
                     countw = 0
                 
-             
         if mw > countw and countw != 0:
             mw = countw
 
@@ -96,10 +94,7 @@ def rect_size():
             mh = counth
 
 def binarray():
-    # print(mh,mw)
-    # print(sc,ec,sr,er)
     global arr,img,dim
-    #Tough Job Starts Here
     xt = 0
     yt = 0
     x = sc
@@ -112,16 +107,10 @@ def binarray():
             else:
                 tmp.append(1)
         
-            if(yt % 2 == 1):
-                y += mw
-            else:
-                y += mh
+            y += (mh if yt % 2 == 0 else mw)
             yt += 1
         
-        if(xt % 2 == 1):
-            x += mw
-        else:
-            x += mh
+        x += (mh if xt % 2 == 0 else mw)
         xt += 1
         arr.append(tmp) 
 
@@ -136,7 +125,6 @@ def getsolindex(row,col,prow,pcol):
         print("Solution Found")
         return
     
-
     try:
             
         if arr[row+1][col] == 1 and (prow != row+1 or pcol != col) and state == False:
@@ -172,34 +160,15 @@ def construct():
         while y < er:
             if [xt,yt] in res:
                 h,k = 0,0
-                if yt % 2 == 1:
-                    k = mw
-
-                else:
-                    k = mh
-
-                if xt % 2 == 1: 
-                    h = mw
-
-                else:
-                    h = mh
-                
-                h += x
-                k += y
+                k = mh + y if yt % 2 == 0 else mw + y
+                h = mh + x if xt % 2 == 0 else mw + x
+               
                 img[x:h,y:k] = sol_clr    
-
-            if yt % 2 == 1:
-                y += mw
-
-            else:
-                y += mh    
+            
+            y += (mh if yt % 2 == 0 else mw)
             yt += 1
         
-        if xt % 2 == 1:
-            x += mw
-        else:
-            x += mh
-        
+        x += (mh if xt % 2 == 0 else mw)
         xt += 1
 
     for h in range(sc,ec):
@@ -223,7 +192,7 @@ def construct():
     print("Showing Resultant")
 
 #adjust location as per your convenience
-img = cv2.imread("/home/avishrant/GitRepo/MazeRunner/Maze/maze.png")
+img = cv2.imread("/home/avishrant/GitRepo/MazeRunner/Maze/maze7.png")
 dim = img.shape
 print("Under Development")
 

@@ -2,8 +2,10 @@
 
 import cv2
 import numpy as np
-from termcolor import colored
+#from termcolor import colored
 
+#[b,g,r] format
+sol_clr = [255,0,0]
 mh,mw = 100,100
 sr,er,sc,ec = 0,0,0,0
 arr = []
@@ -97,7 +99,7 @@ def sarr(img, dim):
     x = sc
     while x < ec:
         tmp=[]
-        y = sr        
+        y = sr         
         while y < er:
             if np.all(img[x][y] == 0):
                 tmp.append(0)
@@ -147,12 +149,49 @@ def getsol(row,col,prow,pcol):
             res.append([row-1,col])
             getsol(row-1,col,row,col)
             
-        if x == False:
+        if state == False:
             res = res[:-1]
         
     except:
         print("Oops")
 
+def construct(img):
+    global sc,sr,ec,er,res,mh,mw
+    x = sc
+    xt = 0
+    while x < ec:
+        y = sr
+        yt = 0
+        while y < er:
+            if [xt,yt] in res:
+                h,k = 0,0
+                if yt % 2 == 1:
+                    k = mw
+
+                else:
+                    k = mh
+
+                if xt % 2 == 1: 
+                    h = mw
+
+                else:
+                    h = mh
+                h += x
+                k += y
+                img[x:h,y:k] = sol_clr            
+            if yt % 2 == 1:
+                y += mw
+
+            else:
+                y += mh    
+            yt += 1
+        
+        if xt % 2 == 1:
+            x += mw
+        else:
+            x += mh
+        
+        xt += 1
         
 #adjust location as per your convenience
 img = cv2.imread("/home/avishrant/GitRepo/MazeRunner/Maze/maze3.png")
@@ -160,13 +199,16 @@ dim = img.shape
 normalise(img,dim)
 sarr(img,dim)
 
-for x in range(0,len(arr)):
-    for y in range(0,len(arr[0])):
-        if [x,y] in res:
-            print(colored(arr[x][y],'red'),end=' ')
-        else:
-            print(arr[x][y],end = ' ')
-    print()    
+construct(img)
+# for x in range(0,len(arr)):
+#     for y in range(0,len(arr[0])):
+#         if [x,y] in res:
+#             print(colored(arr[x][y],'red'),end=' ')
+#         else:
+#             print(arr[x][y],end = ' ')
+#     print()
+
 cv2.imshow("Image", img)
+#cv2.imshow("Image" , resimg)
 cv2.waitKey(0)
 cv2.destroyAllWindows()

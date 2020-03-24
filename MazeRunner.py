@@ -1,6 +1,6 @@
 #Applicable Only for Rectangle-Cell Mazes
 
-import cv2,sys
+import cv2,sys,logging
 import numpy as np
 #from termcolor import colored
 sys.setrecursionlimit(10**6)
@@ -219,11 +219,11 @@ def construct():
                         img[h][k+sol_ind] = path
                         
                 except:
-                    print("Error 401:Ignoring")
+                    logging.error("401: Index Out of Bounds")
     print("Showing Resultant")
 
 #adjust location as per your convenience
-img = cv2.imread("/home/avishrant/GitRepo/MazeRunner/Maze/maze8.png")
+img = cv2.imread("/home/avishrant/GitRepo/MazeRunner/Maze/maze.png")
 dim = img.shape
 print("Under Development")
 

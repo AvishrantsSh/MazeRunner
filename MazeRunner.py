@@ -16,10 +16,10 @@ def normalise(img, dim):
         for y in range(0,dim[1]):
             if np.any(img[x][y] != 255):
                 img[x][y] = [0,0,0]
-    getmstart(img,dim)
-    getsize(img)
+    getbounds(img,dim)
+    rect_size(img)
 
-def getmstart(img,dim):
+def getbounds(img,dim):
     global sc,sr,ec,er
 
     for x in range(0,dim[0]):
@@ -44,7 +44,7 @@ def getmstart(img,dim):
         if st == False:
             break
 
-def getsize(img):
+def rect_size(img):
     global mw,mh,sc,sr,ec,er
 
     for x in range(sc,ec):
@@ -88,7 +88,7 @@ def getsize(img):
         if mh > counth and counth != 0:
             mh = counth
 
-def sarr(img, dim):
+def binarray(img, dim):
     print("Under Development")
     print(mh,mw)
     print(sc,ec,sr,er)
@@ -122,9 +122,9 @@ def sarr(img, dim):
     coord = arr[0].index(1)
     res.append([0,coord])
 
-    getsol(0,coord,0,0)
+    getsolindex(0,coord,0,0)
 
-def getsol(row,col,prow,pcol):
+def getsolindex(row,col,prow,pcol):
     global res,arr,state
     if row == len(arr) -  1:
         state = True
@@ -135,19 +135,19 @@ def getsol(row,col,prow,pcol):
     try:    
         if arr[row][col-1] == 1 and (prow != row or pcol != col-1) and state == False:
             res.append([row,col-1])
-            getsol(row,col-1,row,col)
+            getsolindex(row,col-1,row,col)
                     
         if arr[row][col+1] == 1 and (prow != row or pcol != col+1) and state == False:
             res.append([row,col+1])
-            getsol(row,col+1,row,col)
+            getsolindex(row,col+1,row,col)
         
         if arr[row+1][col] == 1 and (prow != row+1 or pcol != col) and state == False:
             res.append([row+1,col])
-            getsol(row+1,col,row,col)
+            getsolindex(row+1,col,row,col)
         
         if arr[row-1][col] == 1 and (prow != row-1 or pcol != col) and state == False:
             res.append([row-1,col])
-            getsol(row-1,col,row,col)
+            getsolindex(row-1,col,row,col)
             
         if state == False:
             res = res[:-1]
@@ -194,11 +194,10 @@ def construct(img):
         xt += 1
         
 #adjust location as per your convenience
-img = cv2.imread("/home/avishrant/GitRepo/MazeRunner/Maze/maze3.png")
+img = cv2.imread("/home/avishrant/GitRepo/MazeRunner/Maze/maze2.png")
 dim = img.shape
 normalise(img,dim)
-sarr(img,dim)
-
+binarray(img,dim)
 construct(img)
 # for x in range(0,len(arr)):
 #     for y in range(0,len(arr[0])):

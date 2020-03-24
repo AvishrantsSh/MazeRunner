@@ -5,6 +5,8 @@ import numpy as np
 #from termcolor import colored
 sys.setrecursionlimit(10**6)
 
+#Change the indentation fo solution here
+sol_ind = 1
 
 #[b,g,r] format
 sol_clr = [255,0,0]
@@ -161,7 +163,7 @@ def getsolindex(row,col,prow,pcol):
 
 def construct():
     binarray()
-    global sc,sr,ec,er,res,mh,mw,img
+    global sc,sr,ec,er,res,mh,mw,img,sol_ind
     x = sc
     xt = 0
     while x < ec:
@@ -204,17 +206,17 @@ def construct():
         for k in range(sr,er):
             if np.all(img[h][k] == 0):
                 try:
-                    if np.all(img[h-1][k] == sol_clr):
-                        img[h-1][k] = path
+                    if np.all(img[h-sol_ind][k] == sol_clr):
+                        img[h-sol_ind][k] = path
 
-                    if np.all(img[h+1][k] == sol_clr):
-                        img[h+1][k] = path
+                    if np.all(img[h+sol_ind][k] == sol_clr):
+                        img[h+sol_ind][k] = path
 
-                    if np.all(img[h][k-1] == sol_clr):
-                        img[h][k-1] = path
+                    if np.all(img[h][k-sol_ind] == sol_clr):
+                        img[h][k-sol_ind] = path
 
-                    if np.all(img[h][k+1] == sol_clr):
-                        img[h][k+1] = path
+                    if np.all(img[h][k+sol_ind] == sol_clr):
+                        img[h][k+sol_ind] = path
                         
                 except:
                     print("Error 401:Ignoring")

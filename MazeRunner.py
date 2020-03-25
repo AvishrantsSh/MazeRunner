@@ -24,6 +24,8 @@ def normalise():
         for y in range(0,dim[1]):
             if np.any(img[x][y] != 255):
                 img[x][y] = border
+                
+    print("Normalised")
     getbounds()
     rect_size()
 
@@ -50,6 +52,7 @@ def getbounds():
                 break
         if st == False:
             break
+    print("Got Boundaries")
 
 def rect_size():
     global mw,mh,sc,sr,ec,er,img
@@ -92,6 +95,7 @@ def rect_size():
 
         if mh > counth and counth != 0:
             mh = counth
+    print("Got Maze Info")
 
 def binarray():
     global arr,img,dim
@@ -116,6 +120,7 @@ def binarray():
 
     coord = arr[0].index(1)
     res.append([0,coord])
+    print("Constructed Array")
     getsolindex(0,coord,0,0)
 
 def getsolindex(row,col,prow,pcol):
@@ -149,8 +154,11 @@ def getsolindex(row,col,prow,pcol):
     except:
         print("Oops...No Solution Found")
 
+
 def construct():
     binarray()
+    print("Got Solution")
+    print("Constructing")
     global sc,sr,ec,er,res,mh,mw,img,sol_ind
     x = sc
     xt = 0
@@ -171,28 +179,28 @@ def construct():
         x += (mh if xt % 2 == 0 else mw)
         xt += 1
 
-    for h in range(sc,ec):
-        for k in range(sr,er):
-            if np.all(img[h][k] == 0):
-                try:
-                    if np.all(img[h-sol_ind][k] == sol_clr):
-                        img[h-sol_ind][k] = path
+    # for h in range(sc,ec):
+    #     for k in range(sr,er):
+    #         if np.all(img[h][k] == 0):
+    #             try:
+    #                 if np.all(img[h-sol_ind][k] == sol_clr):
+    #                     img[h-sol_ind][k] = path
 
-                    if np.all(img[h+sol_ind][k] == sol_clr):
-                        img[h+sol_ind][k] = path
+    #                 if np.all(img[h+sol_ind][k] == sol_clr):
+    #                     img[h+sol_ind][k] = path
 
-                    if np.all(img[h][k-sol_ind] == sol_clr):
-                        img[h][k-sol_ind] = path
+    #                 if np.all(img[h][k-sol_ind] == sol_clr):
+    #                     img[h][k-sol_ind] = path
 
-                    if np.all(img[h][k+sol_ind] == sol_clr):
-                        img[h][k+sol_ind] = path
+    #                 if np.all(img[h][k+sol_ind] == sol_clr):
+    #                     img[h][k+sol_ind] = path
                         
-                except:
-                    logging.error("401: Index Out of Bounds")
+    #             except:
+    #                 logging.error("401: Index Out of Bounds")
     print("Showing Resultant")
 
 #adjust location as per your convenience
-img = cv2.imread("/home/avishrant/GitRepo/MazeRunner/Maze/maze7.png")
+img = cv2.imread("/home/avishrant/GitRepo/MazeRunner/Maze/maze9.png")
 dim = img.shape
 print("Under Development")
 

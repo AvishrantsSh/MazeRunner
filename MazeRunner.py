@@ -178,7 +178,8 @@ def construct():
         
         x += (mh if xt % 2 == 0 else mw)
         xt += 1
-
+    ##This Part is Under Development and might not work perfectly..Result won't be affected if uncommented
+    
     # for h in range(sc,ec):
     #     for k in range(sr,er):
     #         if np.all(img[h][k] == 0):

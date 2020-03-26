@@ -200,13 +200,17 @@ def construct():
     print("Showing Resultant")
 
 #adjust location as per your convenience
-img = cv2.imread("/home/avishrant/GitRepo/MazeRunner/Maze/maze9.png")
+img = cv2.imread("/home/avishrant/GitRepo/MazeRunner/Maze/maze.png")
 dim = img.shape
 print("Under Development")
 
 print("The process may take time, according to complexity and size of maze")
 normalise()
 construct()
+
+print(mh,mw,sc,ec,sr,ec)
+for x in arr:
+    print(*x , sep = ' ')
 
 cv2.imshow("Image", img)
 #cv2.imshow("Image" , resimg)

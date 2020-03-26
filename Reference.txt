@@ -1,0 +1,14 @@
+sol_ind = Indentation of solution Path (Under Development)
+mh - Minimum Height of Maze Border
+mw - Minimum Width of Maze Path
+sc - Starting Column of Maze Boundary
+ec - Ending Column of Maze Boundary
+sr - Starting Row of Maze Path
+er - Ending Row of Maze Path
+arr[] - Binary 2D list equivalent to image
+res[] - Indices of Solution Path
+img - The Image of the Maze
+dim - Dimensions of the image
+sol_clr - The Colour of the Solution Path [b,g,r] 0 -255
+path - Default Colour of the Path [b,g,r] 0 -255
+border - Default Colour of the Boundary [b,g,r] 0 -255

@@ -1,3 +1,4 @@
+sol_ind = Indentation of solution Path (Under Development)
 mh - Minimum Height of Maze Border
 mw - Minimum Width of Maze Path
 sc - Starting Column of Maze Boundary

@@ -3,16 +3,17 @@
 import cv2,sys,time
 import numpy as np
 #from termcolor import colored
+
 sys.setrecursionlimit(10**6)
 start = time.time()
+
 #Change the indentation fo solution_path here
-sol_ind = 1
+#sol_ind = 1
 
 #[b,g,r] format
 sol_clr = [255,0,0]
 path = 255
 border = 0
-
 mh,mw = 50,0
 sr,er,sc,ec = 0,0,0,0
 arr = []
@@ -59,6 +60,7 @@ def rect_size():
             if mw == 0:
                 index = y
             mw += 1
+            
     counth = 0
     for x in range(sr,er):
         if np.all(img[x][index-1] == 0):
@@ -67,45 +69,7 @@ def rect_size():
             if mh > counth and counth != 0:
                 mh = counth
             counth = 0
-    # for x in range(sr,er):
-    #     countw = 0
-    #     st = True
-        
-    #     for y in range(sc,ec):
-    #         if np.all(img[x][y] == 255):
-    #             countw += 1
-    #             st = False
-
-    #         else:
-    #             if st == False and y == dim[1] - 1:
-    #                 break
-    #             else:
-    #                 if mw > countw and countw != 0:
-    #                     mw = countw
-    #                 countw = 0
-                
-    #     if mw > countw and countw != 0:
-    #         mw = countw             
     
-    # for y in range(sc,ec):
-    #     counth = 0
-    #     st = True
-        
-    #     for x in range(sr,er):
-    #         if np.all(img[x][y] == 0):
-    #             counth += 1
-    #             st = False
-
-    #         else:
-    #             if st == False and x == dim[0] - 1:
-    #                 break
-    #             else:
-    #                 if mh > counth and counth != 0:
-    #                     mh = counth
-    #                 counth = 0
-
-    #     if mh > counth and counth != 0:
-    #         mh = counth
     print("Got Maze Info")
 
 def binarray():

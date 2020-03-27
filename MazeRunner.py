@@ -2,10 +2,9 @@
 
 import cv2,sys,time
 import numpy as np
+import easygui
 #from termcolor import colored
-
 sys.setrecursionlimit(10**6)
-start = time.time()
 
 #Change the indentation fo solution_path here
 #sol_ind = 1
@@ -22,7 +21,7 @@ state = False
 def normalise():
     global img,dim
     ##This Function Needs Some serious shit of work            
-    print("Normalised")
+    print("> Normalised")
     getbounds()
     rect_size()
 
@@ -49,7 +48,7 @@ def getbounds():
                 break
         if st == False:
             break
-    print("Got Boundaries")
+    print("> Got Boundaries")
 
 def rect_size():
     global mw,mh,sc,sr,ec,er,img
@@ -60,7 +59,7 @@ def rect_size():
             if mw == 0:
                 index = y
             mw += 1
-            
+
     counth = 0
     for x in range(sr,er):
         if np.all(img[x][index-1] == 0):
@@ -70,7 +69,7 @@ def rect_size():
                 mh = counth
             counth = 0
     
-    print("Got Maze Info")
+    print("> Got Maze Struct. Info")
 
 def binarray():
     global arr,img,dim
@@ -95,14 +94,14 @@ def binarray():
 
     coord = arr[0].index(1)
     res.append([0,coord])
-    print("Constructed Array")
+    print("> Constructed Array")
     getsolindex(0,coord,0,0)
 
 def getsolindex(row,col,prow,pcol):
     global res,arr,state
     if row == len(arr) -  1:
         state = True
-        print("Solution Found")
+        print("> Solution Found")
         return
     
     try:
@@ -131,7 +130,7 @@ def getsolindex(row,col,prow,pcol):
 
 def construct():
     binarray()
-    print("Constructing")
+    print("> Constructing...")
     global sc,sr,ec,er,res,mh,mw,img,sol_ind
     img = cv2.cvtColor(img,cv2.COLOR_GRAY2RGB)
     x = sc
@@ -172,27 +171,34 @@ def construct():
                         
     #             except:
     #                 logging.error("401: Index Out of Bounds")
-    print("Showing Resultant")
+    print("Showing Result.")
 
 #adjust location as per your convenience
-origimg = cv2.imread("/home/avishrant/GitRepo/MazeRunner/Maze/maze8.png")
-(thresh, img) = cv2.threshold(cv2.cvtColor(origimg, cv2.COLOR_BGR2GRAY), 127, 255, cv2.THRESH_BINARY)
 
-dim = img.shape
-print("Under Development")
+img_path = easygui.fileopenbox()
+try:
+    origimg = cv2.imread(img_path)
+    (thresh, img) = cv2.threshold(cv2.cvtColor(origimg, cv2.COLOR_BGR2GRAY), 127, 255, cv2.THRESH_BINARY)
+    start = time.time()
 
-print("The process may take time, according to complexity and size of maze")
-normalise()
-construct()
+    dim = img.shape
+    print("Under Development")
 
-##Uncomment to see Image Details
-#print("Minimum Edge :",mh,"\n","Minimum Path :",mw,"\n","Starting Col :",sc,"\n","Starting Row :",sr,"\n","Ending Col :",ec,"\n","Ending Row :",er,sep='')
-##Uncomment to see the binary-array
-# for x in arr:
-#     print(*x , sep = ' ')
+    print("The process may take time, according to complexity and size of maze")
+    normalise()
+    construct()
 
-end = time.time()
-print("Execution Time :",end-start,"s")
-cv2.imshow("Image", img)
-cv2.waitKey(0)
-cv2.destroyAllWindows()
+    ##Uncomment to see Image Details
+    #print("Minimum Edge :",mh,"\n","Minimum Path :",mw,"\n","Starting Col :",sc,"\n","Starting Row :",sr,"\n","Ending Col :",ec,"\n","Ending Row :",er,sep='')
+    ##Uncomment to see the binary-array
+    # for x in arr:
+    #     print(*x , sep = ' ')
+
+    end = time.time()
+    print("Execution Time :",end-start,"s")
+    cv2.imshow("Image", img)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
+
+except:
+    print("Something Went Wrong")

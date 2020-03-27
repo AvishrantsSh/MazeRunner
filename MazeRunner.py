@@ -10,8 +10,8 @@ sol_ind = 1
 
 #[b,g,r] format
 sol_clr = [255,0,0]
-path = [255,255,255]
-border = [0,0,0]
+path = 255
+border = 0
 
 mh,mw = 50,0
 sr,er,sc,ec = 0,0,0,0
@@ -20,11 +20,7 @@ res = []
 state = False
 def normalise():
     global img,dim
-    for x in range(0,dim[0]):
-        for y in range(0,dim[1]):
-            if np.any(img[x][y] != 255):
-                img[x][y] = border
-                
+    ##This Function Needs Some serious shit of work            
     print("Normalised")
     getbounds()
     rect_size()
@@ -173,6 +169,7 @@ def construct():
     binarray()
     print("Constructing")
     global sc,sr,ec,er,res,mh,mw,img,sol_ind
+    img = cv2.cvtColor(img,cv2.COLOR_GRAY2RGB)
     x = sc
     xt = 0
     while x < ec:
@@ -214,7 +211,9 @@ def construct():
     print("Showing Resultant")
 
 #adjust location as per your convenience
-img = cv2.imread("/home/avishrant/GitRepo/MazeRunner/Maze/supermaze.png")
+origimg = cv2.imread("/home/avishrant/GitRepo/MazeRunner/Maze/maze8.png")
+(thresh, img) = cv2.threshold(cv2.cvtColor(origimg, cv2.COLOR_BGR2GRAY), 127, 255, cv2.THRESH_BINARY)
+
 dim = img.shape
 print("Under Development")
 
@@ -223,12 +222,8 @@ normalise()
 construct()
 
 ##Uncomment to see Image Details
-
-
 #print("Minimum Edge :",mh,"\n","Minimum Path :",mw,"\n","Starting Col :",sc,"\n","Starting Row :",sr,"\n","Ending Col :",ec,"\n","Ending Row :",er,sep='')
-
 ##Uncomment to see the binary-array
-
 # for x in arr:
 #     print(*x , sep = ' ')
 

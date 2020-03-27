@@ -1,11 +1,11 @@
 #Applicable Only for Rectangle-Cell Mazes
 
-import cv2,sys,logging
+import cv2,sys,time
 import numpy as np
 #from termcolor import colored
 sys.setrecursionlimit(10**6)
-
-#Change the indentation fo solution here
+start = time.time()
+#Change the indentation fo solution_path here
 sol_ind = 1
 
 #[b,g,r] format
@@ -13,7 +13,7 @@ sol_clr = [255,0,0]
 path = [255,255,255]
 border = [0,0,0]
 
-mh,mw = 100,100
+mh,mw = 50,0
 sr,er,sc,ec = 0,0,0,0
 arr = []
 res = []
@@ -56,26 +56,31 @@ def getbounds():
 
 def rect_size():
     global mw,mh,sc,sr,ec,er,img
-    for x in range(sr,er):
-        countw = 0
-        st = True
+    for y in range(sc,ec):
+        x = sr
+        if np.all(img[x][y] == 255):
+            mw += 1
+
+    # for x in range(sr,er):
+    #     countw = 0
+    #     st = True
         
-        for y in range(sc,ec):
-            if np.all(img[x][y] == 255):
-                countw += 1
-                st = False
+    #     for y in range(sc,ec):
+    #         if np.all(img[x][y] == 255):
+    #             countw += 1
+    #             st = False
 
-            else:
-                if st == False and y == dim[1] - 1:
-                    break
-                else:
-                    if mw > countw and countw != 0:
-                        mw = countw
-                    countw = 0
+    #         else:
+    #             if st == False and y == dim[1] - 1:
+    #                 break
+    #             else:
+    #                 if mw > countw and countw != 0:
+    #                     mw = countw
+    #                 countw = 0
                 
-        if mw > countw and countw != 0:
-            mw = countw
-
+    #     if mw > countw and countw != 0:
+    #         mw = countw             
+    
     for y in range(sc,ec):
         counth = 0
         st = True
@@ -95,7 +100,7 @@ def rect_size():
 
         if mh > counth and counth != 0:
             mh = counth
-    print("Got Maze Info" , mw , mh)
+    print("Got Maze Info")
 
 def binarray():
     global arr,img,dim
@@ -199,7 +204,7 @@ def construct():
     print("Showing Resultant")
 
 #adjust location as per your convenience
-img = cv2.imread("/home/avishrant/GitRepo/MazeRunner/Maze/maze9.png")
+img = cv2.imread("/home/avishrant/GitRepo/MazeRunner/Maze/maze8.png")
 dim = img.shape
 print("Under Development")
 
@@ -207,11 +212,17 @@ print("The process may take time, according to complexity and size of maze")
 normalise()
 construct()
 
-print(mh,mw,sc,ec,sr,ec)
-for x in arr:
-    print(*x , sep = ' ')
+##Uncomment to see Image Details
 
+#print("Minimum Edge :",mh,"\n","Minimum Path :",mw,"\n","Starting Col :",sc,"\n","Starting Row :",sr,"\n","Ending Col :",ec,"\n","Ending Row :",er,sep='')
+
+##Uncomment to see the binary-array
+
+# for x in arr:
+#     print(*x , sep = ' ')
+
+end = time.time()
+print(end-start,"s")
 cv2.imshow("Image", img)
-#cv2.imshow("Image" , resimg)
 cv2.waitKey(0)
 cv2.destroyAllWindows()

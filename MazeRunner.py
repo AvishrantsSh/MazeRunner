@@ -56,11 +56,21 @@ def getbounds():
 
 def rect_size():
     global mw,mh,sc,sr,ec,er,img
+    index = 0
     for y in range(sc,ec):
         x = sr
         if np.all(img[x][y] == 255):
+            if mw == 0:
+                index = y
             mw += 1
-
+    counth = 0
+    for x in range(sr,er):
+        if np.all(img[x][index-1] == 0):
+            counth += 1
+        else:
+            if mh > counth and counth != 0:
+                mh = counth
+            counth = 0
     # for x in range(sr,er):
     #     countw = 0
     #     st = True
@@ -81,25 +91,25 @@ def rect_size():
     #     if mw > countw and countw != 0:
     #         mw = countw             
     
-    for y in range(sc,ec):
-        counth = 0
-        st = True
+    # for y in range(sc,ec):
+    #     counth = 0
+    #     st = True
         
-        for x in range(sr,er):
-            if np.all(img[x][y] == 0):
-                counth += 1
-                st = False
+    #     for x in range(sr,er):
+    #         if np.all(img[x][y] == 0):
+    #             counth += 1
+    #             st = False
 
-            else:
-                if st == False and x == dim[0] - 1:
-                    break
-                else:
-                    if mh > counth and counth != 0:
-                        mh = counth
-                    counth = 0
+    #         else:
+    #             if st == False and x == dim[0] - 1:
+    #                 break
+    #             else:
+    #                 if mh > counth and counth != 0:
+    #                     mh = counth
+    #                 counth = 0
 
-        if mh > counth and counth != 0:
-            mh = counth
+    #     if mh > counth and counth != 0:
+    #         mh = counth
     print("Got Maze Info")
 
 def binarray():
@@ -204,7 +214,7 @@ def construct():
     print("Showing Resultant")
 
 #adjust location as per your convenience
-img = cv2.imread("/home/avishrant/GitRepo/MazeRunner/Maze/maze8.png")
+img = cv2.imread("/home/avishrant/GitRepo/MazeRunner/Maze/supermaze.png")
 dim = img.shape
 print("Under Development")
 
@@ -214,6 +224,7 @@ construct()
 
 ##Uncomment to see Image Details
 
+
 #print("Minimum Edge :",mh,"\n","Minimum Path :",mw,"\n","Starting Col :",sc,"\n","Starting Row :",sr,"\n","Ending Col :",ec,"\n","Ending Row :",er,sep='')
 
 ##Uncomment to see the binary-array
@@ -222,7 +233,7 @@ construct()
 #     print(*x , sep = ' ')
 
 end = time.time()
-print(end-start,"s")
+print("Execution Time :",end-start,"s")
 cv2.imshow("Image", img)
 cv2.waitKey(0)
 cv2.destroyAllWindows()

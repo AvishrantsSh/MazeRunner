@@ -56,11 +56,11 @@ def getbounds():
 
 def rect_size():
     global mw,mh,sc,sr,ec,er,img
-    for x in range(sc,ec):
+    for x in range(sr,er):
         countw = 0
         st = True
         
-        for y in range(sr,er):
+        for y in range(sc,ec):
             if np.all(img[x][y] == 255):
                 countw += 1
                 st = False
@@ -76,11 +76,11 @@ def rect_size():
         if mw > countw and countw != 0:
             mw = countw
 
-    for y in range(sr,er):
+    for y in range(sc,ec):
         counth = 0
         st = True
         
-        for x in range(sc,ec):
+        for x in range(sr,er):
             if np.all(img[x][y] == 0):
                 counth += 1
                 st = False
@@ -95,7 +95,7 @@ def rect_size():
 
         if mh > counth and counth != 0:
             mh = counth
-    print("Got Maze Info")
+    print("Got Maze Info" , mw , mh)
 
 def binarray():
     global arr,img,dim
@@ -154,10 +154,8 @@ def getsolindex(row,col,prow,pcol):
     except:
         print("Oops...No Solution Found")
 
-
 def construct():
     binarray()
-    print("Got Solution")
     print("Constructing")
     global sc,sr,ec,er,res,mh,mw,img,sol_ind
     x = sc
@@ -201,7 +199,7 @@ def construct():
     print("Showing Resultant")
 
 #adjust location as per your convenience
-img = cv2.imread("/home/avishrant/GitRepo/MazeRunner/Maze/maze.png")
+img = cv2.imread("/home/avishrant/GitRepo/MazeRunner/Maze/maze9.png")
 dim = img.shape
 print("Under Development")
 

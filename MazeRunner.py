@@ -18,9 +18,6 @@ print("The process may take time, according to complexity and size of maze")
 sol.getparam()
 img = sol.construct()
 
-##Uncomment the next line to see the details
-#print(sol.details())
-
 end = time.time()
 print("Execution Time :",end-start,"s")
 cv2.imshow("Image", img)

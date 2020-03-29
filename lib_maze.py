@@ -1,5 +1,6 @@
 import cv2
 import numpy as np
+
 class solver(object):
     def __init__(self,img):
         self.img = img
@@ -11,7 +12,7 @@ class solver(object):
         self.res = []
         self.state = False
 
-    def normalise(self):
+    def getparam(self):
         ##This Function Needs Some serious shit of work            
         print("> Normalised")
         self.getbounds()
@@ -140,3 +141,6 @@ class solver(object):
         
         print("Showing Result.")
         return self.img
+
+    def details(self):
+        print("Under Dev.")

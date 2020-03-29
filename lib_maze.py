@@ -13,9 +13,7 @@ class solver(object):
     def __init__(self,img):
         self.img = img
         self.dim = img.shape
-<<<<<<< HEAD
         
-=======
         self.sol_clr = [255,0,0]
         self.clr = [0,255]
         self.mazeinf = [0,0,0,0,50,0]
@@ -23,7 +21,6 @@ class solver(object):
         self.res = []
         self.state = False
 
->>>>>>> 89208f1ac06ebcf1c91a54602bd764bf55d1f92d
     def getparam(self):
         ##This Function Needs Some serious shit of work            
         print("> Normalised")

@@ -1,13 +1,11 @@
 #Applicable Only for Orthogonal Mazes
 import cv2,time
 from sys import setrecursionlimit
-from easygui import fileopenbox
 from lib_maze import solver
 
 setrecursionlimit(10**6)
 
-img_path = fileopenbox()
-origimg = cv2.imread(img_path)
+origimg = cv2.imread('Maze/maze8.png')
 (thresh, img) = cv2.threshold(cv2.cvtColor(origimg, cv2.COLOR_BGR2GRAY), 127, 255, cv2.THRESH_BINARY)
 
 sol = solver(img)

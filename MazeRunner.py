@@ -1,12 +1,12 @@
 #Applicable Only for Orthogonal Mazes
-import cv2,time
+import cv2 as cv ,time
 from sys import setrecursionlimit
 from lib_maze import solver
 
 setrecursionlimit(10**6)
 
-origimg = cv2.imread('Maze/maze8.png')
-(thresh, img) = cv2.threshold(cv2.cvtColor(origimg, cv2.COLOR_BGR2GRAY), 127, 255, cv2.THRESH_BINARY)
+origimg = cv.imread('Maze/maze8.png')
+(thresh, img) = cv.threshold(cv.cvtColor(origimg, cv.COLOR_BGR2GRAY), 127, 255, cv.THRESH_BINARY)
 
 sol = solver(img)
 start = time.time()
@@ -18,8 +18,8 @@ img = sol.construct()
 
 end = time.time()
 print("Execution Time :",end-start,"s")
-cv2.imshow("Image", img)
-cv2.waitKey(0)
-cv2.destroyAllWindows()
+cv.imshow("Image", img)
+cv.waitKey(0)
+cv.destroyAllWindows()
 
 print("Oops Something Is wrong")
